@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>留言板首页</title>
+	</head>
+	<body>
+		<?php foreach($lists as $v):?>
+		<p>
+			<h4><?php echo $v['username']?></h4>在<?php echo date('Y-m-d H:i:s',$v['create_time'])?>
+			说 <?php echo $v['content']?>
+		</p>
+		<?php endforeach;?>
+	</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>发表留言</title>
+		<script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="/js/guestbook.js"></script>
+	</head>
+	<body>
+		<h3><?php echo $str;?></h3>
+		<form action="" id="guestbookForm" method="post">
+			<table>
+				<tr>
+					<td width="100">用户名</td>
+					<td><input type="text" name="username" size="50" /></td>
+				</tr>
+				<tr>
+					<td>邮箱</td>
+					<td><input type="text" name="email" size="50" /></td>
+				</tr>
+				<tr>
+					<td>内容</td>
+					<td><textarea name="content" rows="10" cols="50"></textarea></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="提交" /></td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
