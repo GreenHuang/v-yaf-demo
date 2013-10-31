@@ -116,8 +116,8 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 根据分库规则获取当前记录应该在哪个分库
-	 * 默认处理32位16进制的用户ID(腾讯平台传过来的ID)
-	 * @param unknown_type $pk
+	 * 默认处理32位16进制的用户ID
+	 * @param string $pk
 	 */
 	protected static function cutValue($pk) {
 		return intval(fmod(hexdec($pk), USER_DB_NUM)) + 1;
@@ -173,7 +173,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 解析查询过虑器的内容，返回该数据源可识别的查询对象
-	 * @param QueryFilter $queryFilter
+	 * @param system\dal\base\QueryFilter $queryFilter
 	 * @return string where 后面的内容
 	 */
 	public static function parseQueryFilter(QueryFilter $queryFilter) {
@@ -236,7 +236,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 查找总记录数
-	 * @param QueryFilter $queryFilter
+	 * @param system\dal\base\QueryFilter $queryFilter
 	 */
 	public static function count($queryFilter = null) {
 		$sql = 'SELECT count(*) counts FROM ' . static::getTbName();
@@ -351,7 +351,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 查找单条记录
-	 * @param QueryFilter $queryFilter
+	 * @param system\dal\base\QueryFilter $queryFilter
 	 * @param array $fields 需要查询的字段
 	 */
 	public static function fetchOne(QueryFilter $queryFilter, array $fields = array()) {
@@ -394,7 +394,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	/**
 	 * 查找单条记录
 	 * @param string $columnName
-	 * @param unknown_type $value
+	 * @param mixed $value
 	 * @param array $fields
 	 */
 	public static function fetchOneBy($columnName, $value, array $fields = array()) {
@@ -418,7 +418,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 查询所有记录
-	 * @param QueryFilter $queryFilter
+	 * @param system\dal\base\QueryFilter $queryFilter
 	 * @param array $fields
 	 * @param array $sort
 	 */
@@ -488,7 +488,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	/**
 	 * 分页获取记录
 	 * 分库时不能准确获取记录会返回(N * pageSize)条记录
-	 * @param QueryFilter $queryFilter
+	 * @param system\dal\base\QueryFilter $queryFilter
 	 * @param array $fields
 	 * @param array $sortArray
 	 * @param int $pageIndex
@@ -628,10 +628,10 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 分页获取记录(skip)
-	 * @param unknown_type $queryFilter
-	 * @param unknown_type $sortArray
-	 * @param unknown_type $skip
-	 * @param unknown_type $pageSize
+	 * @param system\dal\base\QueryFilter $queryFilter
+	 * @param array $sortArray
+	 * @param int $skip
+	 * @param int $pageSize
 	 */
 	public static function fetchPageUseSkip($queryFilter = null, array $fields = array(), array $sortArray = array(), $skip, $pageSize) {
 		$sql = 'SELECT ' . static::getFieldsStr($fields) . ' FROM ' . static::getTbName();
@@ -693,7 +693,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	 * 获取分页VO(自动获取分记录总数)
 	 * @param int $pageIndex
 	 * @param int $pageSize
-	 * @param QueryFilter $queryFilter
+	 * @param system\dal\base\QueryFilter $queryFilter
 	 * @param array $fields
 	 * @param array $sortArray
 	 * @return array
@@ -805,7 +805,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 移除记录
-	 * @param QueryFilter $queryFilter
+	 * @param system\dal\base\QueryFilter $queryFilter
 	 * @return int 移除记录数
 	 */
 	public static function remove(QueryFilter $queryFilter, array $options = array()) {
@@ -833,9 +833,8 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 移除记录
-	 * Enter description here ...
-	 * @param unknown_type $columnName
-	 * @param unknown_type $value
+	 * @param string $columnName
+	 * @param mixed $value
 	 * @return int 移除记录数
 	 */
 	public static function removeBy($columnName, $value) {
@@ -893,13 +892,10 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 
 	/**
 	 * 更新
-	 * @param unknown_type $columnName
-	 * @param unknown_type $value
+	 * @param string $columnName
+	 * @param mixed $value
 	 * @param array $object 要更新的内容
-	  safe 是否返回操作结果信息 默认为ture
-	  fsync 是否直接插入到物理硬盘 默认为flase
-	  multiple 是否更新多条配置的记录 默认为false
-	  @return int 更新记录数
+	 * @return int
 	 */
 	public static function updateBy($columnName, $value, $object, array $options = array()) {
 		$queryFilter = new QueryFilter();
@@ -908,10 +904,9 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	}
 
 	/**
-	 * increase documents from this collection
-	 * Enter description here ...
+	 * 字段自增
 	 * @param string $columnName
-	 * @param unknown_type $value
+	 * @param int $value
 	 * @param array $object 要更新的内容
 	 */
 	public static function increase(QueryFilter $queryFilter, array $object, array $options = array()) {
@@ -948,10 +943,9 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	}
 
 	/**
-	 * increase documents from this collection
-	 * Enter description here ...
+	 * 字段自增
 	 * @param string $columnName
-	 * @param unknown_type $value
+	 * @param int $value
 	 * @param array $object 要更新的内容
 	 */
 	public static function increaseBy($columnName, $value, $object, array $options = array()) {
@@ -963,7 +957,7 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	/**
 	 * 字段自减
 	 * @param string $columnName
-	 * @param unknown_type $value
+	 * @param int $value
 	 * @param array $object 要更新的内容
 	 */
 	public static function reduce(QueryFilter $queryFilter, array $object, array $options = array()) {
@@ -1066,8 +1060,8 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	 * @param array $fields
 	 * @param array $sort
 	 * @return array
-	 * 例子：ClanCityApplyDao::sumColumnFetchAll(array('sumArmys' => 'armys','sumTroops' => 'troops'),$filter,'cityId')
-	 * 执行的sql： SELECT *,SUM(`armys`) as sumArmys,SUM(`troops`) as troops FROM eu3g_clan_city_apply GROUP BY cityId
+	 * 例子：Dao::sumColumnFetchAll(array('ips' => 'ip','users' => 'user'), $filter ,'cId')
+	 * 执行的sql： SELECT *,SUM(`ip`) as ips,SUM(`user`) as users FROM `schemaName` GROUP BY cId
 	 */
 	public static function sumColumnFetchAll(array $sumColumnName, QueryFilter $queryFilter = null, $group = null, array $fields = array(), array $sort = array()) {
 		$sum = array();
@@ -1124,8 +1118,8 @@ abstract class MysqlBaseDao implements \system\dal\base\IDao {
 	 * @author vergil
 	 * @param 字段名 $columnName
 	 * @return int
-	 * 调用例子： ClanCityApplyDao::countForDistinct('clanId')
-	 * 执行的sql：SELECT COUNT( DISTINCT (`clanId`) ) AS count FROM  `eu3g_clan_city_apply`
+	 * 调用例子： Dao::countForDistinct('id')
+	 * 执行的sql：SELECT COUNT( DISTINCT (`id`) ) AS count FROM  `schemaName`
 	 */
 	public static function countForDistinct($columnName) {
 		$sql = 'SELECT COUNT(DISTINCT(`' . $columnName . '`)) AS count  FROM ' . static::getTbName();
