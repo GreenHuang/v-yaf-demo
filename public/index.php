@@ -11,6 +11,6 @@ define('APPLICATION_PATH',  realpath(dirname(__FILE__) . '/../'));
 
 define ("IS_WINDOWS", DIRECTORY_SEPARATOR == '\\');
 
-$application = new Yaf_Application( APPLICATION_PATH . '/conf/application.ini', 'development');
+$application = new Yaf_Application( APPLICATION_PATH . '/config/application.ini', 'development');
 
 $application->bootstrap()->run();
